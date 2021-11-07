@@ -3,6 +3,7 @@ package com.example.map_app
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.navigation.fragment.NavHostFragment
 
 class MainActivity : AppCompatActivity() {
@@ -16,4 +17,9 @@ class MainActivity : AppCompatActivity() {
 
         val navController = host.navController
     }
+}
+
+fun View.hideKeyboard(){
+    val inputMethodManager = context!!.getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    inputMethodManager?.hideSoftInputFromWindow(this.windowToken,0)
 }

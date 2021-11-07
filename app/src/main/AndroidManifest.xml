@@ -8,7 +8,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Map_App"
-        android:fullBackupContent="true"
+        android:fullBackupContent="@xml/backup_descriptor"
         android:allowBackup="true">
         <activity
             android:name=".MainActivity"

@@ -1,8 +1,24 @@
 <resources>
 
     <string name="app_name">Map Application</string>
-    <string name="logout_hint">Logout</string>
+    <string name="logout_hint">Выйти</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_TermsOfUse_Switch">Согласен с правилами</string>
 
+    <string-array name="registration_dataset">
+        <item>Регистрация</item>
+        <item>Логин</item>
+        <item>E-mail</item>
+        <item>Пароль</item>
+        <item>Повторить пароль</item>
+        <item>Зарегистрироваться</item>
+    </string-array>
+
+    <string-array name="logging_dataset">
+        <item>Вход</item>
+        <item>Логин</item>
+        <item>Пароль</item>
+        <item>Войти</item>
+    </string-array>
 
 </resources>

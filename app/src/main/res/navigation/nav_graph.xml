@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/home_dest">
+
+    <fragment
+        android:id="@+id/home_dest"
+        android:name="com.example.map_app.home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/on_idle_auth"
+            app:destination="@id/login_or_register_dest"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/nav_graph"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/login_or_register_dest"
+        android:name="com.example.map_app.authentication.AuthFragment"
+        android:label="fragment_login_or_register"
+        tools:layout="@layout/fragment_auth" >
+        <action
+            android:id="@+id/on_auth_completed"
+            app:destination="@id/home_dest"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="true"
+            app:popUpTo="@id/nav_graph"/>
+    </fragment>
+</navigation>

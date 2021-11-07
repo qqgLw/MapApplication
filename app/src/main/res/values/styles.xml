@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="TermsOfUseSwitch">
+        <item name="colorControlActivated">@color/mainVariant</item>
+    </style>
+
+</resources>

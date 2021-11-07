@@ -19,6 +19,34 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     private val isInputValid = MutableLiveData<Boolean>()
 
+    var termsOfUseSwitchPosition = MutableLiveData<Boolean>()
+    val formCanBeSubmitted = MediatorLiveData<Boolean>()
+
+    init {
+
+        formCanBeSubmitted.addSource(isInputValid){
+            val termComplete = termsOfUseSwitchPosition.value
+
+            if(it==false)
+                formCanBeSubmitted.value=false
+            else
+                formCanBeSubmitted.value=termComplete
+        }
+
+        formCanBeSubmitted.addSource(termsOfUseSwitchPosition){
+            val inputComplete = isInputValid.value
+
+            if(it==false)
+                formCanBeSubmitted.value=false
+            else
+                formCanBeSubmitted.value=inputComplete
+        }
+    }
+
+    fun onFormSubmit(
+        key:Boolean=true,
+    ){}
+
     fun validateInput(input: TextInputLayout?){
         input?.isErrorEnabled=false
         val nestedEditText = input?.editText

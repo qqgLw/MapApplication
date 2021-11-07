@@ -45,7 +45,7 @@ class AuthRecViewAdapter(
                 holder.bind(position,formDataset[position],switchState,authViewModel)
             }
             is FooterViewHolder -> {
-                holder.bind(formDataset[position],switchState)
+                holder.bind(formDataset[position],authViewModel,switchState)
             }
         }
     }
@@ -149,8 +149,11 @@ class AuthRecViewAdapter(
 
         fun bind(
             text: String,
+            authViewModel: AuthViewModel,
             switchState: Boolean
         ) {
+            binding.authViewModel=authViewModel
+            binding.formState=switchState
             binding.footerButton.text = text
             binding.termsOfUseSwitch.isChecked=switchState
         }

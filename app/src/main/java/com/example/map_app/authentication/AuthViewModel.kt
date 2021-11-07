@@ -3,8 +3,12 @@ package com.example.map_app.authentication
 import android.app.Application
 import android.text.Editable
 import androidx.lifecycle.*
+import com.example.map_app.database.User
+import com.example.map_app.database.UserRepository
 import com.example.map_app.util.InputTextUtils
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -43,9 +47,54 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private var repository : UserRepository = UserRepository(application)
+
+    private val _loginData= MediatorLiveData<Boolean>()
+    val loginData :LiveData<Boolean>
+        get() = _loginData
+
+    private val _regData= MediatorLiveData<Boolean>()
+    val regData :LiveData<Boolean>
+        get() = _regData
+
+    private val users = repository.users
+
+    private fun addUser(user : User){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.addUser(user)
+        }
+    }
+
+    private fun authenticateUser(login : String, password : String) : LiveData<User> {
+        return repository.authenticateUser(login, password)
+    }
+
     fun onFormSubmit(
         key:Boolean=true,
-    ){}
+    ){
+        when(key){
+            true->{
+                val loggedUser = authenticateUser(
+                    loginInputContainer[0].value!!,
+                    loginInputContainer[1].value!!)
+                _loginData.addSource(loggedUser){
+                    _loginData.value = (it!=null)
+                }
+            }
+            false-> {
+                addUser(User(
+                    0,
+                    registerInputContainer[1].value!!,
+                    registerInputContainer[0].value!!,
+                    registerInputContainer[2].value!!
+                ))
+                _regData.addSource(users) {
+                    if (it.isNotEmpty())
+                        _regData.value =  (it.last().login == registerInputContainer[0].value)
+                }
+            }
+        }
+    }
 
     fun validateInput(input: TextInputLayout?){
         input?.isErrorEnabled=false

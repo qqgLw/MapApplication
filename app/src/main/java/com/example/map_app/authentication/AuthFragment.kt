@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.map_app.R
@@ -47,6 +49,13 @@ class AuthFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         onCheckLog(authViewModel)
 
+        authViewModel.loginData.observe(viewLifecycleOwner) {
+            onFormCompleted(it)
+        }
+
+        authViewModel.regData.observe(viewLifecycleOwner) {
+            onFormCompleted(it)
+        }
    }
 
     private fun onCheckReg(authViewModel: AuthViewModel){
@@ -55,5 +64,11 @@ class AuthFragment : Fragment() {
 
     private fun onCheckLog(authViewModel: AuthViewModel) {
         recyclerView.adapter = AuthRecViewAdapter(getLogDataset(resources), authViewModel, ::onCheckReg)
+    }
+
+    private fun onFormCompleted(result : Boolean){
+        val toastMessage = when(result){true -> "Succeed" false -> "Failed"}
+        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+        //this.findNavController().navigate(R.id.on_auth_completed)
     }
 }

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.map_app.R
 import com.example.map_app.databinding.FragmentAuthBinding
 import com.example.map_app.hideKeyboard
+import com.example.map_app.service.AuthSharedPreferenceService
 import com.example.map_app.util.getLogDataset
 import com.example.map_app.util.getRegDataset
 
@@ -23,11 +24,13 @@ class AuthFragment : Fragment() {
 
     private lateinit var binding : FragmentAuthBinding
     private lateinit var recyclerView: RecyclerView
+    private lateinit var authSharedPreferencesService : AuthSharedPreferenceService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        authSharedPreferencesService = AuthSharedPreferenceService(this.requireContext())
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_auth, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
@@ -67,8 +70,11 @@ class AuthFragment : Fragment() {
     }
 
     private fun onFormCompleted(result : Boolean){
-        val toastMessage = when(result){true -> "Succeed" false -> "Failed"}
-        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
-        //this.findNavController().navigate(R.id.on_auth_completed)
+        when(result){
+            true -> {
+                authSharedPreferencesService.saveCurrentUserData()
+                this.findNavController().navigate(R.id.on_auth_completed)}
+            //false -> Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+        }
     }
 }

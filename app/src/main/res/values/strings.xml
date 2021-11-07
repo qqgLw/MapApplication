@@ -23,4 +23,14 @@
         <item>Войти</item>
     </string-array>
 
+    <string name="ERROR_INPUT_EMPTY">Поле обязательно для ввода!</string>
+    <string name="ERROR_INPUT_CONTAINS_WHITESPACE">Введенное значение не должно содержать пробелов!</string>
+    <string name="ERROR_INPUT_INVALID_EMAIL">Недопустимый формат эл. почты!</string>
+    <string name="ERROR_INPUT_PASSWORD_UPPERCASE">Пароль должен содержать заглавные буквы!</string>
+    <string name="ERROR_INPUT_PASSWORD_LOWERCASE">Пароль должен содержть строчные буквы!</string>
+    <string name="ERROR_INPUT_PASSWORD_DIGIT">Пароль должен содержать цифры!</string>
+    <string name="ERROR_INPUT_PASSWORD_LENGTH">Пароль должен содержать не менее 8 символов!</string>
+    <string name="ERROR_INPUT_CONFIRMPASSWORD_EMPTYPRIMARY">Сначала введите пароль!</string>
+    <string name="ERROR_INPUT_CONFIRMPASSWORD_NOTMATCHING">Пароли не совпадают!</string>
+
 </resources>

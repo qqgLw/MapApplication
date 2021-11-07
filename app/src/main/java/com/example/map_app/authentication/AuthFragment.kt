@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.map_app.R
@@ -30,17 +31,19 @@ class AuthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        onCheckLog()
+        onCheckLog(authViewModel)
 
    }
 
-    private fun onCheckReg(){
-        recyclerView.adapter = AuthRecViewAdapter(getRegDataset(resources),::onCheckLog)
+    private fun onCheckReg(authViewModel: AuthViewModel){
+        recyclerView.adapter = AuthRecViewAdapter(getRegDataset(resources), authViewModel, ::onCheckLog)
     }
 
-    private fun onCheckLog() {
-        recyclerView.adapter = AuthRecViewAdapter(getLogDataset(resources),::onCheckReg)
+    private fun onCheckLog(authViewModel: AuthViewModel) {
+        recyclerView.adapter = AuthRecViewAdapter(getLogDataset(resources), authViewModel, ::onCheckReg)
     }
 }

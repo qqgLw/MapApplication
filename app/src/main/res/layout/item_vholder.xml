@@ -1,8 +1,12 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="android.text.InputType"/>
+        <variable
+            name="authViewModel"
+            type="com.example.map_app.authentication.AuthViewModel" />
     </data>
 
     <RelativeLayout
@@ -17,14 +21,17 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             app:passwordToggleEnabled="false"
-            app:errorIconDrawable="@null">
+            app:errorIconDrawable="@null"
+            app:errorTextColor="@color/textDisabled">
 
             <EditText
                 android:id="@+id/inputField"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:onTextChanged="@{()->authViewModel.validateInput(inputContainer)}"
+                android:singleLine="true"
+                tools:ignore="Autofill,TextFields" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

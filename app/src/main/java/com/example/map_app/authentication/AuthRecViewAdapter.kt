@@ -12,10 +12,12 @@ import com.example.map_app.databinding.FooterVholderBinding
 import com.example.map_app.databinding.ItemVholderBinding
 import com.llollox.androidtoggleswitch.widgets.ToggleSwitch
 
+
 class AuthRecViewAdapter(
     private val formDataset: List<String>,
-    var formSwitchListener: (() -> Unit)? = null
-    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val authViewModel: AuthViewModel,
+    var formSwitchListener: ((aVM:AuthViewModel) -> Unit)? = null)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var switchState : Boolean = (formDataset[0]=="Вход")
 
@@ -28,7 +30,8 @@ class AuthRecViewAdapter(
                 HeaderViewHolder(v)
             }
             R.layout.item_vholder -> ItemViewHolder.from(parent)
-            R.layout.footer_vholder -> FooterViewHolder.from(parent, parent.context as LifecycleOwner)
+            R.layout.footer_vholder -> FooterViewHolder.from(parent,
+                parent.context as LifecycleOwner)
             else->{
                 throw RuntimeException("No type to match type $viewType!")
             }
@@ -39,7 +42,7 @@ class AuthRecViewAdapter(
         when (holder) {
             is HeaderViewHolder -> holder.bind()
             is ItemViewHolder -> {
-                holder.bind(position,formDataset[position],switchState)
+                holder.bind(position,formDataset[position],switchState,authViewModel)
             }
             is FooterViewHolder -> {
                 holder.bind(formDataset[position],switchState)
@@ -61,10 +64,12 @@ class AuthRecViewAdapter(
         RecyclerView.ViewHolder(itemView), ToggleSwitch.OnChangeListener
     {
         private val switchPosition = mapOf(true to 0, false to 1)
+
         private var switch: ToggleSwitch = itemView.findViewById(R.id.header_switch)
 
         override fun onToggleSwitchChanged(position: Int) {
-            formSwitchListener?.invoke()
+            authViewModel.switchForm()
+            formSwitchListener?.invoke(authViewModel)
         }
 
         fun bind() {
@@ -89,11 +94,14 @@ class AuthRecViewAdapter(
             position: Int,
             text: String,
             switchState: Boolean,
+            authViewModel: AuthViewModel
         ) {
             val localTag : Pair<Int,String?> = Pair(position.dec(), formType[switchState])
 
             binding.inputContainer.hint = text
             binding.inputField.tag = localTag
+
+            binding.authViewModel=authViewModel
 
             regInputTypeSet(switchState, position)
         }
@@ -106,7 +114,7 @@ class AuthRecViewAdapter(
                 if (position == 2) {
                     binding.inputContainer.isPasswordVisibilityToggleEnabled = true
                     binding.inputField.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                     binding.inputField.imeOptions=EditorInfo.IME_ACTION_DONE
                 }
             } else {

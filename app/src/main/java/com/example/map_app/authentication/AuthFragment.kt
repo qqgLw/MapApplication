@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.map_app.R
 import com.example.map_app.databinding.FragmentAuthBinding
+import com.example.map_app.util.getLogDataset
 import com.example.map_app.util.getRegDataset
 
 class AuthFragment : Fragment() {
@@ -31,7 +32,15 @@ class AuthFragment : Fragment() {
 
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = AuthRecViewAdapter(getRegDataset(resources))
+        onCheckLog()
 
    }
+
+    private fun onCheckReg(){
+        recyclerView.adapter = AuthRecViewAdapter(getRegDataset(resources),::onCheckLog)
+    }
+
+    private fun onCheckLog() {
+        recyclerView.adapter = AuthRecViewAdapter(getLogDataset(resources),::onCheckReg)
+    }
 }

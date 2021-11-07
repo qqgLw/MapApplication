@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.map_app.R
 import com.example.map_app.databinding.FooterVholderBinding
 import com.example.map_app.databinding.ItemVholderBinding
+import com.llollox.androidtoggleswitch.widgets.ToggleSwitch
 
 class AuthRecViewAdapter(
-    private val formDataset: List<String>
+    private val formDataset: List<String>,
+    var formSwitchListener: (() -> Unit)? = null
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var switchState : Boolean = (formDataset[0]=="Вход")
@@ -56,10 +58,18 @@ class AuthRecViewAdapter(
     }
 
     inner class HeaderViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView)
+        RecyclerView.ViewHolder(itemView), ToggleSwitch.OnChangeListener
     {
-        fun bind() {
+        private val switchPosition = mapOf(true to 0, false to 1)
+        private var switch: ToggleSwitch = itemView.findViewById(R.id.header_switch)
 
+        override fun onToggleSwitchChanged(position: Int) {
+            formSwitchListener?.invoke()
+        }
+
+        fun bind() {
+            switch.setCheckedPosition(switchPosition[switchState]!!)
+            switch.onChangeListener = this
         }
     }
 

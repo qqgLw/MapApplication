@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="10dp">
+
+    <com.llollox.androidtoggleswitch.widgets.ToggleSwitch
+        android:id="@+id/header_switch"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textToggleLeft="@string/switch_login"
+        app:textToggleRight="@string/switch_registration"
+        app:checkedBackgroundColor="@color/main"
+        app:checkedTextColor="@color/white"
+        app:uncheckedBackgroundColor="@color/white"
+        app:uncheckedTextColor="@color/main"
+        app:borderRadius="8dp"
+        app:borderWidth="1dp"
+        app:checkedBorderColor="@color/gray_light"
+        app:uncheckedBorderColor="@color/gray_border"
+        app:separatorVisible="false"/>
+
+</RelativeLayout>

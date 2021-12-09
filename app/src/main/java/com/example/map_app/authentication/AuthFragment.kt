@@ -2,11 +2,8 @@ package com.example.map_app.authentication
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -74,7 +71,11 @@ class AuthFragment : Fragment() {
             true -> {
                 authSharedPreferencesService.saveCurrentUserData()
                 this.findNavController().navigate(R.id.on_auth_completed)}
-            //false -> Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show()
+            false ->{
+                val toast = Toast.makeText(context, "Пользователь не найден", Toast.LENGTH_SHORT)
+                toast.setGravity(Gravity.TOP, 0, 0)
+                toast.show()
+            }
         }
     }
 }

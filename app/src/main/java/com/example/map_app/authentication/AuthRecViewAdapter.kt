@@ -1,15 +1,18 @@
 package com.example.map_app.authentication
 
 import android.text.InputType
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.map_app.R
 import com.example.map_app.databinding.FooterVholderBinding
 import com.example.map_app.databinding.ItemVholderBinding
+import com.example.map_app.hideKeyboard
 import com.llollox.androidtoggleswitch.widgets.ToggleSwitch
 
 
@@ -68,7 +71,6 @@ class AuthRecViewAdapter(
         private var switch: ToggleSwitch = itemView.findViewById(R.id.header_switch)
 
         override fun onToggleSwitchChanged(position: Int) {
-            authViewModel.switchForm()
             formSwitchListener?.invoke(authViewModel)
         }
 
@@ -97,12 +99,14 @@ class AuthRecViewAdapter(
             authViewModel: AuthViewModel
         ) {
             val localTag : Pair<Int,String?> = Pair(position.dec(), formType[switchState])
+            val inputText = authViewModel.getInputValue(position,switchState)
 
-            binding.inputContainer.hint = text
+            binding.inputField.hint = text
             binding.inputField.tag = localTag
+            binding.inputField.setText(inputText)
 
             binding.authViewModel=authViewModel
-
+            binding.inputField.setOnEditorActionListener(OnEditorActionFooterHandler(switchState))
             regInputTypeSet(switchState, position)
         }
 
@@ -132,6 +136,17 @@ class AuthRecViewAdapter(
                             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
                     }
                 }
+            }
+        }
+        inner class OnEditorActionFooterHandler(val mSwitchState: Boolean) : TextView.OnEditorActionListener{
+            override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    binding.root.hideKeyboard()
+                    //необходимо сделать .performClick() у кнопки футера
+                    //binding.authViewModel?.onFormSubmit(mSwitchState)
+                    return true
+                }
+                return false
             }
         }
     }

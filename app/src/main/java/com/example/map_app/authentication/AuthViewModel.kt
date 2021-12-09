@@ -15,10 +15,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val registerInputContainer = Array(4){ MutableLiveData<String?>(null) }
     private val loginInputContainer = Array(2){ MutableLiveData<String?>(null) }
 
-    fun switchForm() {
-        isInputValid.value=false
-        registerInputContainer.flush()
-        loginInputContainer.flush()
+    fun getInputValue(position : Int, switchState:Boolean):String? {
+        return when (switchState){
+            true -> loginInputContainer[position.dec()].value
+            false -> registerInputContainer[position.dec()].value
+        }
     }
 
     private val isInputValid = MutableLiveData<Boolean>()

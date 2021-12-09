@@ -13,6 +13,8 @@ import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 
+private val TARGET_LOCATION = Point(59.945933, 30.320045)
+
 class MapFragment : Fragment() {
 
     private lateinit var binding : FragmentMapBinding
@@ -29,7 +31,7 @@ class MapFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.mapview.map.move(
             CameraPosition(
-                Point(55.751574, 37.573856), 11.0f, 0.0f, 0.0f),
+                TARGET_LOCATION, 13.0f, 0.0f, 0.0f),
             Animation(Animation.Type.SMOOTH, 0F),null)
         return binding.root
     }

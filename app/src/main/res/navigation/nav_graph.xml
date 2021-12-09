@@ -3,23 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/home_dest">
-
-    <fragment
-        android:id="@+id/home_dest"
-        android:name="com.example.map_app.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/on_idle_auth"
-            app:destination="@id/login_or_register_dest"
-            app:launchSingleTop="true"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/nav_graph"/>
-        <action
-            android:id="@+id/home_to_mapFragment"
-            app:destination="@id/mapFragment" />
-    </fragment>
+    app:startDestination="@id/profileFragment">
 
     <fragment
         android:id="@+id/login_or_register_dest"
@@ -28,13 +12,41 @@
         tools:layout="@layout/fragment_auth" >
         <action
             android:id="@+id/on_auth_completed"
-            app:destination="@id/home_dest"
-            app:launchSingleTop="true"
-            app:popUpToInclusive="true"
-            app:popUpTo="@id/nav_graph"/>
+            app:destination="@id/profileFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.map_app.map.MapFragment"
-        android:label="MapFragment" />
+        android:label="fragment_map" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.map_app.profile.ProfileFragment"
+        android:label="profile_map" >
+        <action
+            android:id="@+id/on_idle_auth"
+            app:destination="@id/login_or_register_dest" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/actionProfileFragment"
+        android:name="com.example.map_app.profile.ProfileFragment"
+        android:label="bottom_nav_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/on_idle_auth"
+            app:destination="@id/login_or_register_dest" />
+    </fragment>
+    <fragment
+        android:id="@+id/actionMapFragment"
+        android:name="com.example.map_app.map.MapFragment"
+        android:label="bottom_nav_map"
+        tools:layout="@layout/fragment_map"/>
+    <fragment
+        android:id="@+id/actionPlacesFragment"
+        android:name="com.example.map_app.places.PlacesFragment"
+        android:label="bottom_nav_placemarks"
+        tools:layout="@layout/fragment_places"/>
+
 </navigation>

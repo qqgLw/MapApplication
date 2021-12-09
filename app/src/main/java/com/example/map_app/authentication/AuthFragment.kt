@@ -17,12 +17,14 @@ import com.example.map_app.models.UserModel
 import com.example.map_app.service.AuthSharedPreferenceService
 import com.example.map_app.util.getLogDataset
 import com.example.map_app.util.getRegDataset
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class AuthFragment : Fragment() {
 
     private lateinit var binding : FragmentAuthBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var authSharedPreferencesService : AuthSharedPreferenceService
+    private lateinit var navBar : BottomNavigationView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,9 +33,15 @@ class AuthFragment : Fragment() {
         authSharedPreferencesService = AuthSharedPreferenceService(this.requireContext())
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_auth, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        navBar = requireActivity().findViewById((R.id.bottomNavigationView))
+        navBar.visibility=View.GONE
         return binding.root
     }
 
+    override fun onStop() {
+        super.onStop()
+        navBar.visibility=View.VISIBLE
+    }
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,7 +82,6 @@ class AuthFragment : Fragment() {
                 this.findNavController().navigate(R.id.on_auth_completed)}
             false ->{
                 val toast = Toast.makeText(context, "Ошибка входа: неверный логин или пароль", Toast.LENGTH_SHORT)
-                toast.setGravity(Gravity.TOP, 0, 0)
                 toast.show()
             }
         }

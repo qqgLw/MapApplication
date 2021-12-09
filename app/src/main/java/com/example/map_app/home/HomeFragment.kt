@@ -34,6 +34,7 @@ class HomeFragment : Fragment() {
         binding.navigateDestinationButton.setOnClickListener {
             logOut()
         }
+        binding.navigateMap.setOnClickListener { this.findNavController().navigate(R.id.home_to_mapFragment) }
     }
     private fun logOut(){
         authSharedPreferencesService.deleteCurrentUserData()

@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.yandex.android:maps.mobile:4.0.0-full'
     implementation("com.llollox:androidtoggleswitch:2.0.3")
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.3.5")

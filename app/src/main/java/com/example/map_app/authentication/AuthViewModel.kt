@@ -5,6 +5,7 @@ import android.text.Editable
 import androidx.lifecycle.*
 import com.example.map_app.database.User
 import com.example.map_app.database.UserRepository
+import com.example.map_app.models.UserModel
 import com.example.map_app.util.InputTextUtils
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
@@ -50,12 +51,12 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository : UserRepository = UserRepository(application)
 
-    private val _loginData= MediatorLiveData<Boolean>()
-    val loginData :LiveData<Boolean>
+    private val _loginData= MediatorLiveData<UserModel?>()
+    val loginData :LiveData<UserModel?>
         get() = _loginData
 
-    private val _regData= MediatorLiveData<Boolean>()
-    val regData :LiveData<Boolean>
+    private val _regData= MediatorLiveData<UserModel?>()
+    val regData :LiveData<UserModel?>
         get() = _regData
 
     private val users = repository.users
@@ -79,7 +80,9 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                     loginInputContainer[0].value!!,
                     loginInputContainer[1].value!!)
                 _loginData.addSource(loggedUser){
-                    _loginData.value = (it!=null)
+                    if (it==null)
+                        _regData.value = null
+                    else _loginData.value = (UserModel(it.id, it.login, it.email))
                 }
             }
             false-> {
@@ -90,9 +93,11 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
                     registerInputContainer[2].value!!
                 ))
                 _regData.addSource(users) {
-                    if (it.isNotEmpty())
-                        _regData.value =  (it.last().login == registerInputContainer[0].value)
-                }
+                    val lastUser = it.last()
+                    if (it.isNotEmpty() && lastUser.login == registerInputContainer[0].value)
+                        if (it==null)
+                            _regData.value = null
+                        else _regData.value = (UserModel(lastUser.id, lastUser.login, lastUser.email))}
             }
         }
     }

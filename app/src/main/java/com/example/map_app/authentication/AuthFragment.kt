@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.map_app.R
 import com.example.map_app.databinding.FragmentAuthBinding
 import com.example.map_app.hideKeyboard
+import com.example.map_app.models.UserModel
 import com.example.map_app.service.AuthSharedPreferenceService
 import com.example.map_app.util.getLogDataset
 import com.example.map_app.util.getRegDataset
@@ -56,7 +57,7 @@ class AuthFragment : Fragment() {
         authViewModel.regData.observe(viewLifecycleOwner) {
             onFormCompleted(it)
         }
-   }
+    }
 
     private fun onCheckReg(authViewModel: AuthViewModel){
         recyclerView.adapter = AuthRecViewAdapter(getRegDataset(resources), authViewModel, ::onCheckLog)
@@ -66,13 +67,13 @@ class AuthFragment : Fragment() {
         recyclerView.adapter = AuthRecViewAdapter(getLogDataset(resources), authViewModel, ::onCheckReg)
     }
 
-    private fun onFormCompleted(result : Boolean){
-        when(result){
+    private fun onFormCompleted(result : UserModel?){
+        when(result!=null){
             true -> {
-                authSharedPreferencesService.saveCurrentUserData()
+                authSharedPreferencesService.saveCurrentUserData(result)
                 this.findNavController().navigate(R.id.on_auth_completed)}
             false ->{
-                val toast = Toast.makeText(context, "Пользователь не найден", Toast.LENGTH_SHORT)
+                val toast = Toast.makeText(context, "Ошибка входа: неверный логин или пароль", Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.TOP, 0, 0)
                 toast.show()
             }

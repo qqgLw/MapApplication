@@ -2,17 +2,19 @@ package com.example.map_app.service
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.map_app.models.UserModel
 
 class AuthSharedPreferenceService(currentContext: Context) {
 
     private val APP_PREFERENCES = "AuthorizedUser"
-    private val APP_PREFERENCES_STATUS = "Session"
 
     private var sharedPreferences : SharedPreferences = currentContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
-    fun saveCurrentUserData(){
+    fun saveCurrentUserData(user : UserModel){
         sharedPreferences.edit().apply{
-            putBoolean(APP_PREFERENCES_STATUS, true)
+            putInt("AuthorizedUser id", user.id)
+            putString("AuthorizedUser login", user.login)
+            putString("AuthorizedUser email", user.email)
         }.apply()
     }
 
@@ -22,5 +24,13 @@ class AuthSharedPreferenceService(currentContext: Context) {
         }.apply()
     }
 
-    val isAuthorized =  sharedPreferences.getBoolean(APP_PREFERENCES_STATUS, false)
+    fun loadCurrentUser(): UserModel {
+        val userId = sharedPreferences.getInt("AuthorizedUser id", 0)
+        val userLogin = sharedPreferences.getString("AuthorizedUser login", "").toString()
+        val userEmail = sharedPreferences.getString("AuthorizedUser email", "").toString()
+
+        return UserModel(userId, userLogin, userEmail)
+    }
+
+    val isAuthorized =  sharedPreferences.getString("AuthorizedUser email", "") != ""
 }

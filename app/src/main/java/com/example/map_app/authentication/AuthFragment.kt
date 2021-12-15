@@ -79,7 +79,7 @@ class AuthFragment : Fragment() {
         when(result!=null){
             true -> {
                 authSharedPreferencesService.saveCurrentUserData(result)
-                this.findNavController().navigate(R.id.on_auth_completed)}
+                this.findNavController().navigate(R.id.action_login_or_register_dest_to_actionProfileFragment)}
             false ->{
                 val toast = Toast.makeText(context, "Ошибка входа: неверный логин или пароль", Toast.LENGTH_SHORT)
                 toast.show()

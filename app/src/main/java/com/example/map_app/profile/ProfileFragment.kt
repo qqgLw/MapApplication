@@ -23,7 +23,6 @@ class ProfileFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
         authSharedPreferencesService = AuthSharedPreferenceService(this.requireContext())
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.userInfo.text = "Профиль: ${authSharedPreferencesService.loadCurrentUser().login}"
         return binding.root
     }
 
@@ -32,6 +31,7 @@ class ProfileFragment : Fragment() {
         if (!authSharedPreferencesService.isAuthorized){
             this.findNavController().navigate(R.id.on_idle_auth)
         }
+        binding.userInfo.text = "Профиль: ${authSharedPreferencesService.loadCurrentUser().login}"
         binding.navigateDestinationButton.setOnClickListener {
             logOut()
         }

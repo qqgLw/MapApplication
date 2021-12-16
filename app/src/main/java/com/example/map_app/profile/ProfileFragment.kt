@@ -10,18 +10,21 @@ import androidx.navigation.fragment.findNavController
 import com.example.map_app.R
 import com.example.map_app.databinding.FragmentProfileBinding
 import com.example.map_app.services.AuthSharedPreferenceService
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private lateinit var binding : FragmentProfileBinding
-    private lateinit var authSharedPreferencesService : AuthSharedPreferenceService
+    @Inject lateinit var authSharedPreferencesService : AuthSharedPreferenceService
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
-        authSharedPreferencesService = AuthSharedPreferenceService(this.requireContext())
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }

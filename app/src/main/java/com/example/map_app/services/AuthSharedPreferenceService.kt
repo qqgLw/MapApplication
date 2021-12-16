@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.map_app.models.UserModel
 
-class AuthSharedPreferenceService(currentContext: Context) {
+class AuthSharedPreferenceService(appContext: Context) {
 
     private val APP_PREFERENCES = "AuthorizedUser"
 
-    private var sharedPreferences : SharedPreferences = currentContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+    private var sharedPreferences : SharedPreferences = appContext.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
 
     fun saveCurrentUserData(user : UserModel){
         sharedPreferences.edit().apply{

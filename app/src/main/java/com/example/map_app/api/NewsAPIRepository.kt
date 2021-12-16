@@ -12,4 +12,10 @@ class NewsAPIRepository {
         .build()
 
     private val requestMaker = retrofit.create(NewsAPI::class.java)
+
+    suspend fun getTopHeadlines(countryCode: String, pageNumber: Int) =
+        requestMaker.getTopHeadlines(countryCode, pageNumber)
+
+    suspend fun searchNews(searchQuery: String, pageNumber: Int) =
+        requestMaker.searchForNews(searchQuery, pageNumber)
 }

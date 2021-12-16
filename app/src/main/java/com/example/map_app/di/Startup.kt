@@ -3,8 +3,11 @@ package com.example.map_app.di
 import android.content.Context
 import com.example.map_app.api.NewsAPIRepository
 import com.example.map_app.database.AppDatabase
+import com.example.map_app.database.dao.ArticleDao
 import com.example.map_app.database.dao.UserDao
+import com.example.map_app.repositories.NewsRepository
 import com.example.map_app.repositories.UserRepository
+import com.example.map_app.services.AuthSharedPreferenceService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,4 +36,12 @@ class Startup {
     @Provides
     @Singleton
     fun provideNewsAPIRepository() = NewsAPIRepository()
+
+    @Provides
+    fun provideNewsRepository(articleDao: ArticleDao, apiRepository: NewsAPIRepository) =
+        NewsRepository(articleDao, apiRepository)
+
+    @Provides
+    @Singleton
+    fun provideAuthSharedPreferences(@ApplicationContext context: Context) = AuthSharedPreferenceService(context)
 }

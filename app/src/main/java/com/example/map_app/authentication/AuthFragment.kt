@@ -19,21 +19,21 @@ import com.example.map_app.util.getLogDataset
 import com.example.map_app.util.getRegDataset
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AuthFragment : Fragment() {
 
     private lateinit var binding : FragmentAuthBinding
     private lateinit var recyclerView: RecyclerView
-    private lateinit var authSharedPreferencesService : AuthSharedPreferenceService
     private lateinit var navBar : BottomNavigationView
     private val authViewModel: AuthViewModel by viewModels()
+    @Inject lateinit var authSharedPreferencesService : AuthSharedPreferenceService
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        authSharedPreferencesService = AuthSharedPreferenceService(this.requireContext())
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_auth, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         navBar = requireActivity().findViewById((R.id.bottomNavigationView))

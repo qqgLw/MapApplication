@@ -1,8 +1,9 @@
 <resources>
 
     <string name="bottom_nav_profile">Профиль</string>
-    <string name="bottom_nav_placemarks">Места</string>
-    <string name="bottom_nav_map">Карта</string>
+    <string name="bottom_nav_top_headlines">Главное</string>
+    <string name="bottom_nav_fav">Сохраненные</string>
+    <string name="bottom_nav_search">Поиск</string>
 
     <string name="app_name">Map Application</string>
     <string name="logout_hint">Выйти</string>

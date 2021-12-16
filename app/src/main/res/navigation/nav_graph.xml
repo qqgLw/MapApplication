@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/actionProfileFragment">
-
+    app:startDestination="@id/profileFragment">
     <fragment
-        android:id="@+id/login_or_register_dest"
+        android:id="@+id/authFragment"
         android:name="com.example.map_app.authentication.AuthFragment"
-        android:label="fragment_login_or_register"
-        tools:layout="@layout/fragment_auth" >
+        android:label="AuthFragment" >
         <action
-            android:id="@+id/action_login_or_register_dest_to_actionProfileFragment"
-            app:destination="@id/actionProfileFragment" />
+            android:id="@+id/action_on_auth_completed"
+            app:destination="@id/profileFragment" />
     </fragment>
-
     <fragment
-        android:id="@+id/actionProfileFragment"
+        android:id="@+id/profileFragment"
         android:name="com.example.map_app.profile.ProfileFragment"
-        android:label="bottom_nav_profile"
-        tools:layout="@layout/fragment_profile">
+        android:label="ProfileFragment" >
         <action
-            android:id="@+id/on_idle_auth"
-            app:destination="@id/login_or_register_dest" />
+            android:id="@+id/action_on_idle_auth"
+            app:destination="@id/authFragment" />
     </fragment>
     <fragment
-        android:id="@+id/actionMapFragment"
-        android:name="com.example.map_app.map.MapFragment"
-        android:label="bottom_nav_map"
-        tools:layout="@layout/fragment_map"/>
+        android:id="@+id/topHeadLinesFragment"
+        android:name="com.example.map_app.news.TopHeadLinesFragment"
+        android:label="TopHeadLinesFragment" >
+        <action
+            android:id="@+id/action_topHeadLinesFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/actionPlacesFragment"
-        android:name="com.example.map_app.places.PlacesFragment"
-        android:label="bottom_nav_placemarks"
-        tools:layout="@layout/fragment_places"/>
-
+        android:id="@+id/articleFragment"
+        android:name="com.example.map_app.news.ArticleFragment"
+        android:label="ArticleFragment" />
+    <fragment
+        android:id="@+id/savedNewsFragment"
+        android:name="com.example.map_app.news.SavedNewsFragment"
+        android:label="SavedNewsFragment" >
+        <action
+            android:id="@+id/action_savedNewsFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchNewsFragment"
+        android:name="com.example.map_app.news.SearchNewsFragment"
+        android:label="SearchNewsFragment" >
+        <action
+            android:id="@+id/action_searchNewsFragment_to_articleFragment"
+            app:destination="@id/articleFragment" />
+    </fragment>
 </navigation>

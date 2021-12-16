@@ -14,7 +14,7 @@ import com.example.map_app.R
 import com.example.map_app.databinding.FragmentAuthBinding
 import com.example.map_app.hideKeyboard
 import com.example.map_app.models.UserModel
-import com.example.map_app.service.AuthSharedPreferenceService
+import com.example.map_app.services.AuthSharedPreferenceService
 import com.example.map_app.util.getLogDataset
 import com.example.map_app.util.getRegDataset
 import com.google.android.material.bottomnavigation.BottomNavigationView

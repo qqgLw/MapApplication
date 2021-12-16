@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/topHeadLinesFragment"
-        android:name="com.example.map_app.news.TopHeadLinesFragment"
+        android:name="com.example.map_app.news.fragments.TopHeadLinesFragment"
         android:label="TopHeadLinesFragment" >
         <action
             android:id="@+id/action_topHeadLinesFragment_to_articleFragment"
@@ -29,11 +29,11 @@
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
-        android:name="com.example.map_app.news.ArticleFragment"
+        android:name="com.example.map_app.news.fragments.ArticleFragment"
         android:label="ArticleFragment" />
     <fragment
         android:id="@+id/savedNewsFragment"
-        android:name="com.example.map_app.news.SavedNewsFragment"
+        android:name="com.example.map_app.news.fragments.SavedNewsFragment"
         android:label="SavedNewsFragment" >
         <action
             android:id="@+id/action_savedNewsFragment_to_articleFragment"
@@ -41,7 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchNewsFragment"
-        android:name="com.example.map_app.news.SearchNewsFragment"
+        android:name="com.example.map_app.news.fragments.SearchNewsFragment"
         android:label="SearchNewsFragment" >
         <action
             android:id="@+id/action_searchNewsFragment_to_articleFragment"

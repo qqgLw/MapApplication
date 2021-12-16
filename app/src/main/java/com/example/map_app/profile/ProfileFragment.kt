@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.map_app.R
 import com.example.map_app.databinding.FragmentProfileBinding
-import com.example.map_app.service.AuthSharedPreferenceService
+import com.example.map_app.services.AuthSharedPreferenceService
 
 class ProfileFragment : Fragment() {
 

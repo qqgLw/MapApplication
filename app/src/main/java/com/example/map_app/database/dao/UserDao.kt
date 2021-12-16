@@ -1,10 +1,11 @@
-package com.example.map_app.database
+package com.example.map_app.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.map_app.database.tables.User
 
 @Dao
 interface UserDao {

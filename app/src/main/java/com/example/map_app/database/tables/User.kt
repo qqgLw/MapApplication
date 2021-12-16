@@ -1,4 +1,4 @@
-package com.example.map_app.database
+package com.example.map_app.database.tables
 
 import androidx.annotation.NonNull
 import androidx.room.Entity

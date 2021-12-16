@@ -2,8 +2,8 @@ package com.example.map_app.authentication
 
 import android.text.Editable
 import androidx.lifecycle.*
-import com.example.map_app.database.User
-import com.example.map_app.database.UserRepository
+import com.example.map_app.database.tables.User
+import com.example.map_app.repositories.UserRepository
 import com.example.map_app.models.UserModel
 import com.example.map_app.util.InputTextUtils
 import com.google.android.material.textfield.TextInputLayout

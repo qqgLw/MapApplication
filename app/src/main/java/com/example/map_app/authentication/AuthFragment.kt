@@ -18,6 +18,7 @@ import com.example.map_app.services.AuthSharedPreferenceService
 import com.example.map_app.util.getLogDataset
 import com.example.map_app.util.getRegDataset
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -84,8 +85,7 @@ class AuthFragment : Fragment() {
                 this.findNavController().navigate(R.id.action_on_auth_completed)
             }
             false ->{
-                val toast = Toast.makeText(context, "Ошибка входа: неверный логин или пароль", Toast.LENGTH_SHORT)
-                toast.show()
+                Snackbar.make(this.requireView(), "Ошибка входа: неверный логин или пароль", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

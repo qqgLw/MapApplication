@@ -5,12 +5,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.map_app.R
 import com.example.map_app.news.NewsAdapter
 import com.example.map_app.news.NewsViewModel
 import com.example.map_app.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_search_news.*
 import kotlinx.android.synthetic.main.fragment_top_headlines.*
 
 @AndroidEntryPoint
@@ -22,10 +24,16 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        newsAdapter = NewsAdapter()
-        recViewTopHeadlines.apply {
-            adapter = newsAdapter
-            layoutManager = LinearLayoutManager(activity)
+        setupRecyclerView()
+
+        newsAdapter.setOnItemClickListener {
+            val bundle = Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(
+                R.id.action_topHeadLinesFragment_to_articleFragment,
+                bundle
+            )
         }
 
         newsViewModel.topHeadlines.observe(viewLifecycleOwner){
@@ -53,5 +61,13 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) {
 
     private fun showProgressBar() {
         feedPaginationProgressBar.visibility = View.VISIBLE
+    }
+
+    private fun setupRecyclerView() {
+        newsAdapter = NewsAdapter()
+        recViewTopHeadlines.apply {
+            adapter = newsAdapter
+            layoutManager = LinearLayoutManager(activity)
+        }
     }
 }

@@ -14,12 +14,14 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
 
 private val TARGET_LOCATION = Point(59.945933, 30.320045)
+private val MAPKIT_API_KEY = "675cc8ac-9f7d-4c56-82c0-e4c4eddb80f4"
 
 class MapFragment : Fragment() {
 
     private lateinit var binding : FragmentMapBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        MapKitFactory.setApiKey(MAPKIT_API_KEY)
         MapKitFactory.initialize(this.context)
         super.onCreate(savedInstanceState)
     }

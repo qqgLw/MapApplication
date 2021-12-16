@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.map_app.R
+import com.example.map_app.activity
 import com.example.map_app.databinding.FooterVholderBinding
 import com.example.map_app.databinding.ItemVholderBinding
 import com.example.map_app.hideKeyboard
@@ -34,7 +35,7 @@ class AuthRecViewAdapter(
             }
             R.layout.item_vholder -> ItemViewHolder.from(parent)
             R.layout.footer_vholder -> FooterViewHolder.from(parent,
-                parent.context as LifecycleOwner)
+                parent.context.activity() as LifecycleOwner)
             else->{
                 throw RuntimeException("No type to match type $viewType!")
             }
@@ -71,6 +72,7 @@ class AuthRecViewAdapter(
         private var switch: ToggleSwitch = itemView.findViewById(R.id.header_switch)
 
         override fun onToggleSwitchChanged(position: Int) {
+            authViewModel.switchForm(switchState)
             formSwitchListener?.invoke(authViewModel)
         }
 

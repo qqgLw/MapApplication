@@ -6,7 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,13 +18,16 @@ import com.example.map_app.service.AuthSharedPreferenceService
 import com.example.map_app.util.getLogDataset
 import com.example.map_app.util.getRegDataset
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AuthFragment : Fragment() {
 
     private lateinit var binding : FragmentAuthBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var authSharedPreferencesService : AuthSharedPreferenceService
     private lateinit var navBar : BottomNavigationView
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,13 +43,12 @@ class AuthFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        view?.hideKeyboard()
         navBar.visibility=View.VISIBLE
     }
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val authViewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
         recyclerView = binding.recyclerView
         recyclerView.setOnTouchListener { v, event ->

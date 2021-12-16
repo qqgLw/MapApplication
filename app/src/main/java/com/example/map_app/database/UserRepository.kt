@@ -1,21 +1,18 @@
 package com.example.map_app.database
 
-import android.app.Application
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 
-class UserRepository(application: Application) {
+class UserRepository(private val userDAO : UserDao) {
 
-    private val userDao = AppDatabase.getDatabase(application).userDao()
-
-    val users = userDao.getUsers()
+    val users = userDAO.getUsers()
 
     fun  authenticateUser(
         login : String,
         password : String
-    ) : LiveData<User> =  userDao.authenticateUser(login, password)
+    ) : LiveData<User> =  userDAO.authenticateUser(login, password)
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun addUser(user: User) { userDao.addUser(user) }
+    suspend fun addUser(user: User) { userDAO.addUser(user) }
 }

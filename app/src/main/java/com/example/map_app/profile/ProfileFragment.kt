@@ -31,9 +31,6 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (!authSharedPreferencesService.isAuthorized){
-            this.findNavController().navigate(R.id.action_on_idle_auth)
-        }
         binding.userInfo.text = "Профиль: ${authSharedPreferencesService.loadCurrentUser().login}"
         binding.navigateDestinationButton.setOnClickListener {
             logOut()

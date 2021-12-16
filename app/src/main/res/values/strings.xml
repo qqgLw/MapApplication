@@ -37,5 +37,6 @@
     <string name="ERROR_INPUT_PASSWORD_LENGTH">Пароль должен содержать не менее 8 символов!</string>
     <string name="ERROR_INPUT_CONFIRMPASSWORD_EMPTYPRIMARY">Сначала введите пароль!</string>
     <string name="ERROR_INPUT_CONFIRMPASSWORD_NOTMATCHING">Пароли не совпадают!</string>
+    <string name="searchBarHint">Search...</string>
 
 </resources>

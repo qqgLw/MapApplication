@@ -2,14 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/profileFragment">
+    app:startDestination="@id/topHeadLinesFragment">
     <fragment
         android:id="@+id/authFragment"
         android:name="com.example.map_app.authentication.AuthFragment"
         android:label="AuthFragment" >
         <action
             android:id="@+id/action_on_auth_completed"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/topHeadLinesFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

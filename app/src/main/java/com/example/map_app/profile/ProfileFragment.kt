@@ -31,7 +31,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.userInfo.text = "Профиль: ${authSharedPreferencesService.loadCurrentUser().login}"
+        binding.userInfo.text = "ID: ${authSharedPreferencesService.loadCurrentUser().id} Профиль: ${authSharedPreferencesService.loadCurrentUser().login}"
         binding.navigateDestinationButton.setOnClickListener {
             logOut()
         }

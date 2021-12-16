@@ -18,7 +18,7 @@ import java.io.Serializable
 data class Article(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val ownerId: Int? = null,
+    var ownerId: Int? = null,
     val author: String,
     val content: String,
     val description: String,

@@ -44,4 +44,13 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
         return Resource.Error(response.message())
     }
 
+    fun saveArticle(article: Article) = viewModelScope.launch {
+        newsRepository.insertOrUpdateArticle(article)
+    }
+
+    fun getSavedNews() = newsRepository.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        newsRepository.deleteArticle(article)
+    }
 }

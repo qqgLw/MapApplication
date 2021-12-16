@@ -38,10 +38,13 @@ class Startup {
     fun provideNewsAPIRepository() = NewsAPIRepository()
 
     @Provides
-    fun provideNewsRepository(articleDao: ArticleDao, apiRepository: NewsAPIRepository) =
-        NewsRepository(articleDao, apiRepository)
-
-    @Provides
     @Singleton
     fun provideAuthSharedPreferences(@ApplicationContext context: Context) = AuthSharedPreferenceService(context)
+
+    @Provides
+    fun provideNewsRepository(
+        articleDao: ArticleDao,
+        apiRepository: NewsAPIRepository,
+        authSharedPreferences: AuthSharedPreferenceService
+        ) = NewsRepository(articleDao, apiRepository, authSharedPreferences)
 }

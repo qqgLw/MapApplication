@@ -54,12 +54,12 @@ class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
 
         var job:Job? = null //job coroutine for delaying search request
 
-        editTextSearch.addTextChangedListener {
+        editTextSearch.addTextChangedListener { editable ->
             job?.cancel() //restart delay on input
             job = MainScope().launch {
                 delay(SEARCH_NEWS_TIME_DELAY)
-                it?.let{
-                    val input = it.toString()
+                editable?.let{
+                    val input = editable.toString()
                     if(input.isNotEmpty())
                         newsViewModel.searchNews(input)
                 }

@@ -13,6 +13,7 @@
         android:fullBackupContent="@xml/backup_descriptor"
         android:allowBackup="true">
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

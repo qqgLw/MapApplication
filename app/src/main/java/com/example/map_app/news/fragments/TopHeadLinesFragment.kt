@@ -4,22 +4,29 @@ import android.os.Bundle
 import android.view.View
 import android.widget.AbsListView
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.map_app.R
+import com.example.map_app.api.NewsResponse
+import com.example.map_app.hideKeyboard
 import com.example.map_app.news.NewsAdapter
 import com.example.map_app.news.NewsViewModel
+import com.example.map_app.util.Constants
 import com.example.map_app.util.Constants.Companion.QUERY_PAGE_SIZE
 import com.example.map_app.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_search_news.*
 import kotlinx.android.synthetic.main.fragment_top_headlines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) {
+class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO fix bug with headlines displaying news count after paginating search response
 
     private val newsViewModel: NewsViewModel by viewModels()
     lateinit var newsAdapter: NewsAdapter
@@ -46,28 +53,58 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) {
             )
         }
 
-        newsViewModel.topHeadlines.observe(viewLifecycleOwner){
-            when(it){
-                is Resource.Success -> {
-                    hideProgressBar()
-                    it.data?.let{newsResponse ->
-                        newsAdapter.differ.submitList(newsResponse.articles.toList())
-                        val totalPages = newsResponse.totalResults / QUERY_PAGE_SIZE + 2 //+2 because of truncation and empty last response element
-                        isLastPage = newsViewModel.topHeadlinesPage == totalPages
-                        if(isLastPage) {
+        var job: Job? = null //job coroutine for delaying search request
 
-                            recViewTopHeadlines.setPadding(0,0,0,paddingDp)
-                        }
+        altEditTextSearch.addTextChangedListener { editable ->
+            job?.cancel() //restart delay on input
+            job = MainScope().launch {
+                delay(Constants.SEARCH_NEWS_TIME_DELAY)
+                editable?.let{
+                    val input = editable.toString()
+                    if(input.isNotEmpty())
+                        newsViewModel.searchNews(input)
+                    else {
+                        newsViewModel.topHeadlinesPage = 1
+                        newsViewModel.getTopHeadlines("ru")
                     }
                 }
-                is Resource.Error -> {
-                    hideProgressBar()
-                    it.message?.let{message ->
-                        Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG).show()
-                    }
-                }
-                is Resource.Loading -> showProgressBar()
             }
+        }
+
+        newsViewModel.topHeadlines.observe(viewLifecycleOwner){
+            handleResponse(it, paddingDp, newsViewModel.topHeadlinesPage)
+        }
+
+        newsViewModel.searchNews.observe(viewLifecycleOwner){
+            handleResponse(it, paddingDp, newsViewModel.searchNewsPage)
+        }
+    }
+
+    private fun handleResponse(
+        it: Resource<NewsResponse>,
+        paddingDp: Int,
+        pageCount :Int
+    ) {
+        when (it) {
+            is Resource.Success -> {
+                hideProgressBar()
+                it.data?.let { newsResponse ->
+                    newsAdapter.differ.submitList(newsResponse.articles.toList())
+                    val totalPages =
+                        newsResponse.totalResults / QUERY_PAGE_SIZE + 2 //+2 because of truncation and empty last response element
+                    isLastPage = pageCount == totalPages
+                    if (isLastPage) {
+                        recViewTopHeadlines.setPadding(0, 0, 0, paddingDp)
+                    }
+                }
+            }
+            is Resource.Error -> {
+                hideProgressBar()
+                it.message?.let { message ->
+                    Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG).show()
+                }
+            }
+            is Resource.Loading -> showProgressBar()
         }
     }
 
@@ -81,11 +118,12 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) {
         isLoading = true
     }
 
-    val scrollListener = object : RecyclerView.OnScrollListener(){ //custom scroll listener to perform query on paginating\
+    private val scrollListener = object : RecyclerView.OnScrollListener(){ //custom scroll listener to perform query on paginating\
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             super.onScrollStateChanged(recyclerView, newState)
 
             if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL){
+                view?.hideKeyboard()
                 isScrolling = true
             }
         }
@@ -111,7 +149,10 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) {
                     && isScrolling
 
             if(shouldPaginate){
-                newsViewModel.getTopHeadlines("ru")
+                when(altEditTextSearch.text.isEmpty()){
+                    true ->  newsViewModel.getTopHeadlines("ru")
+                    false -> newsViewModel.searchNews(altEditTextSearch.text.toString())
+                }
                 isScrolling=false
             }
         }

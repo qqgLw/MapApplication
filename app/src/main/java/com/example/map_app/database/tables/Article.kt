@@ -16,8 +16,6 @@ import java.io.Serializable
     )]
 )
 data class Article(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
     var ownerId: Int? = null,
     val author: String,
     val content: String,
@@ -25,6 +23,7 @@ data class Article(
     val publishedAt: String,
     val source: Source,
     val title: String,
+    @PrimaryKey
     val url: String,
     val urlToImage: String
 ) : Serializable

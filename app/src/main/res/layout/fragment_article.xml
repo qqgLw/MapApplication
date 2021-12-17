@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_favorite"
         app:fabSize="normal"
+        app:tint="@null"
         app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/verticalGuideline"

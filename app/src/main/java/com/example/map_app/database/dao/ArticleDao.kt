@@ -7,7 +7,7 @@ import com.example.map_app.database.tables.Article
 interface ArticleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrUpdate(article: Article): Long
+    suspend fun insertOrUpdate(article: Article)
 
     @Query("SELECT * FROM articles WHERE ownerId = :ownerId ORDER BY publishedAt")
     fun getAllArticles(ownerId:Int?): LiveData<List<Article>>

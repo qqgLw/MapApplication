@@ -11,9 +11,10 @@ import com.example.map_app.R
 import com.example.map_app.database.tables.Article
 import kotlinx.android.synthetic.main.item_article_preview.view.*
 
-class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
+class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class ArticleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    inner class EmptyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
     private val differCallback = object : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
@@ -27,31 +28,56 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ArticleViewHolder>() {
 
     val differ = AsyncListDiffer(this, differCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        return ArticleViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_article_preview,
-                parent,
-                false
-            )
-        )
+    override fun getItemViewType(position: Int): Int {
+        return when (differ.currentList.isEmpty()){
+            true -> {R.layout.item_empty_preview}
+            false -> R.layout.item_article_preview
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            R.layout.item_article_preview -> {
+                ArticleViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                        R.layout.item_article_preview,
+                        parent,
+                        false
+                    )
+                )
+            }
+            else -> {
+                EmptyViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                        R.layout.item_empty_preview,
+                        parent,
+                        false
+                    )
+                )
+            }
+        }
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
 
-    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        val article = differ.currentList[position]
-        holder.itemView.apply {
-            Glide.with(this).load(article.urlToImage).into(ivArticleImage)
-            tvSource.text = article.source?.name
-            tvTitle.text = article.title
-            tvDescription.text = article.description
-            tvPublishedAt.text = article.publishedAt
-            setOnClickListener {
-                onItemClickListener?.let { it(article) }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is ArticleViewHolder -> {
+                val article = differ.currentList[position]
+                holder.itemView.apply {
+                    Glide.with(this).load(article.urlToImage).into(ivArticleImage)
+                    tvSource.text = article.source?.name
+                    tvTitle.text = article.title
+                    tvDescription.text = article.description
+                    tvPublishedAt.text = article.publishedAt
+                    setOnClickListener {
+                        onItemClickListener?.let { it(article) }
+                    }
+                }
             }
+            is EmptyViewHolder->{}
         }
     }
 

@@ -38,5 +38,6 @@
     <string name="ERROR_INPUT_CONFIRMPASSWORD_EMPTYPRIMARY">Сначала введите пароль!</string>
     <string name="ERROR_INPUT_CONFIRMPASSWORD_NOTMATCHING">Пароли не совпадают!</string>
     <string name="searchBarHint">Search...</string>
+    <string name="rec_view_empty_list_title">Ничего не найдено</string>
 
 </resources>

@@ -26,7 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO fix bug with headlines displaying news count after paginating search response
+class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO fix bug with headlines displaying news count after paginating search response + "update required" error
 
     private val newsViewModel: NewsViewModel by viewModels()
     lateinit var newsAdapter: NewsAdapter
@@ -69,6 +69,16 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO 
                     }
                 }
             }
+        }
+
+        swipeContainer.setOnRefreshListener{
+            newsAdapter.differ.submitList(emptyList())
+            if (altEditTextSearch.text.toString().isNotEmpty()) {
+                newsViewModel.searchNews(altEditTextSearch.text.toString())
+            } else {
+                newsViewModel.getTopHeadlines("ru")
+            }
+            swipeContainer.isRefreshing = false
         }
 
         newsViewModel.topHeadlines.observe(viewLifecycleOwner){

@@ -1,9 +1,13 @@
 package com.example.map_app.news.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.widget.AbsListView
+import android.widget.EditText
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,10 +30,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO fix bug with headlines displaying news count after paginating search response + "update required" error
+class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) {
 
     private val newsViewModel: NewsViewModel by viewModels()
-    lateinit var newsAdapter: NewsAdapter
+    private lateinit var newsAdapter: NewsAdapter
 
     var isLoading = false
     var isLastPage = false
@@ -37,6 +41,9 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        addRightCancelDrawable(altEditTextSearch)
+        altEditTextSearch.onRightDrawableClicked { it.text.clear() }
 
         setupRecyclerView()
 
@@ -64,7 +71,7 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO 
                     if(input.isNotEmpty())
                         newsViewModel.searchNews(input)
                     else {
-                        newsViewModel.topHeadlinesPage = 1
+                        newsViewModel.refreshTopHeadlinesHandlerState()
                         newsViewModel.getTopHeadlines("ru")
                     }
                 }
@@ -74,8 +81,10 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO 
         swipeContainer.setOnRefreshListener{
             newsAdapter.differ.submitList(emptyList())
             if (altEditTextSearch.text.toString().isNotEmpty()) {
+                newsViewModel.refreshSearchHandlerState()
                 newsViewModel.searchNews(altEditTextSearch.text.toString())
             } else {
+                newsViewModel.refreshTopHeadlinesHandlerState()
                 newsViewModel.getTopHeadlines("ru")
             }
             swipeContainer.isRefreshing = false
@@ -111,7 +120,7 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO 
             is Resource.Error -> {
                 hideProgressBar()
                 it.message?.let { message ->
-                    Toast.makeText(activity, "An error occured: $message", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG).show()
                 }
             }
             is Resource.Loading -> showProgressBar()
@@ -168,12 +177,34 @@ class TopHeadLinesFragment : Fragment(R.layout.fragment_top_headlines) { //TODO 
         }
     }
 
+    private fun addRightCancelDrawable(editText: EditText) {
+        val cancel = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_cancel_24)
+        cancel?.setBounds(0,0, cancel.intrinsicWidth, cancel.intrinsicHeight)
+        editText.setCompoundDrawables(null, null, cancel, null)
+    }
+
     private fun setupRecyclerView() {
         newsAdapter = NewsAdapter()
         recViewTopHeadlines.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@TopHeadLinesFragment.scrollListener)
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun EditText.onRightDrawableClicked(onClicked: (view: EditText) -> Unit) {
+        this.setOnTouchListener { v, event ->
+            var hasConsumed = false
+            if (v is EditText) {
+                if (event.x >= v.width - v.totalPaddingRight) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        onClicked(this)
+                    }
+                    hasConsumed = true
+                }
+            }
+            hasConsumed
         }
     }
 }

@@ -24,17 +24,27 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
 
     val topHeadlines : MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var topHeadlinesPage = 1
-    var topHeadlinesResponse: NewsResponse? = null
+    private var topHeadlinesResponse: NewsResponse? = null
 
-    var newSearchQuery:String? = null
-    var oldSearchQuery:String? = null
+    private var newSearchQuery:String? = null
+    private var oldSearchQuery:String? = null
 
     val searchNews : MutableLiveData<Resource<NewsResponse>> = MutableLiveData()
     var searchNewsPage = 1
-    var searchNewsResponse: NewsResponse? = null
+    private var searchNewsResponse: NewsResponse? = null
 
     init {
         getTopHeadlines("ru")
+    }
+
+    fun refreshTopHeadlinesHandlerState() {
+        topHeadlinesPage = 1
+        topHeadlinesResponse = null
+    }
+
+    fun refreshSearchHandlerState() {
+        searchNewsPage = 1
+        searchNewsResponse = null
     }
 
     fun getTopHeadlines(countryCode: String) = viewModelScope.launch {

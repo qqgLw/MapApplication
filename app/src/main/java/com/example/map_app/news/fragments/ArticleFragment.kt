@@ -36,6 +36,11 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         }
     }
 
+    override fun onPause() {
+        webView.stopLoading()
+        super.onPause()
+    }
+
     inner class ArticleWebClient : WebViewClient(){
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
@@ -48,8 +53,8 @@ class ArticleFragment : Fragment(R.layout.fragment_article) {
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
             view?.visibility = View.VISIBLE
-            fab.visibility = View.VISIBLE
-            pageLoadingPB.visibility = View.INVISIBLE
+            fab?.visibility = View.VISIBLE
+            pageLoadingPB?.visibility = View.INVISIBLE
         }
     }
 }
